@@ -10,4 +10,25 @@ html
         h1 Дата выпуска: #{book.releaseDate}
         h1 Жанр: #{book.genre}
         h1 Страниц: #{book.pages}
-        h1 Есть в наличии: #{book.isAvailable}
+        
+        if book.isAvailable
+            h1 Есть в наличии
+        else
+            h1 Книга выдана
+            h1 Читатель: #{book.borrowedBy} 
+            h1 Дата получения: #{book.borrowDate}
+            h1 Дата возврата: #{book.returnDate} 
+
+        .book-actions
+            if book.isAvailable
+                button(onclick=`bookDialog.showModal()`) Выдать книгу
+
+        dialog#bookDialog
+            form#borrowForm(action=`/books/${book.id}` method="POST")
+                label Имя читателя | Дата возврата
+                br
+                input(type="text" name="readerName" placeholder="Имя читателя" required) 
+                input(type="date" name="returnDate" required)
+                br
+                button(type="submit") Выдать
+                button(type="button" onclick="bookDialog.close()") Отмена

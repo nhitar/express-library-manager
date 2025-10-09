@@ -61,6 +61,7 @@ a:hover {
     font-weight: bold;
 }
 
+/* ИСПРАВЛЕННЫЙ КОД */
 .book-actions {
     display: flex;
     flex-direction: row;
@@ -69,11 +70,20 @@ a:hover {
 }
 
 .book-actions form {
-    display: block;
+    display: flex;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
 }
 
 .book-actions button {
     width: 100%;
     padding: 10px;
     text-align: center;
+    margin: 0;
+    white-space: nowrap;
+    flex: 1;
 }

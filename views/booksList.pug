@@ -13,6 +13,28 @@ html
             button(type="submit") Применить
             a(href="/books") Сбросить
 
+        .book-actions
+            button(onclick=`bookDialog.showModal()`) Добавить книгу
+
+        dialog#bookDialog
+            form#addBookForm(action="/books" method="POST")
+                input(type="text" name="author" placeholder="Автор" required) 
+                input(type="text" name="title" placeholder="Название" required)
+                br
+                select(name="genre" required)
+                    option(value="") Выберите жанр
+                    option(value="Роман") Роман
+                    option(value="Фантастика") Фантастика
+                    option(value="Детектив") Детектив
+                    option(value="Поэзия") Поэзия
+                    option(value="Драма") Драма
+                input(type="date" name="releaseDate" placeholder="Год выпуска")
+                br
+                input(type="number" name="pages" placeholder="Число страниц")
+                br
+                button(type="submit") Добавить
+                button(type="button" onclick="bookDialog.close()") Отмена
+
         h1(style="color: #333; font-size: 24px; border-bottom: 2px solid #007bff; padding-bottom: 10px;") Список книг
 
         each book in books 
@@ -30,26 +52,7 @@ html
 
                 .book-actions
                     form(action=`/books/${book.id}?_method=DELETE` method="POST")
-                        button(type="submit" onclick="return confirm('Удалить?')") Удалить
+                        button(color="red" type="submit" onclick="return confirm('Удалить?')") Удалить
                     
                     form(action=`/books/${book.id}` method="GET")
                         button(type="submit") Перейти на страничку
-
-                    if book.isAvailable
-                        button(onclick=`openBorrowDialog('${book.id}')`) Выдать книгу
-
-        dialog#bookDialog
-            form#borrowForm(method="POST")
-                label Имя читателя | Дата возврата
-                br
-                input(type="text" name="readerName" placeholder="Имя читателя" required) 
-                input(type="date" name="returnDate" required)
-                br
-                button(type="submit") Выдать
-                button(type="button" onclick="bookDialog.close()") Отмена
-
-        script.
-            function openBorrowDialog(bookId) {
-                document.getElementById('borrowForm').action = `/books/${bookId}`;
-                bookDialog.showModal();
-            }

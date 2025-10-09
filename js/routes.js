@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const fs = require('fs');
+const { v4: uuidv4 } = require('uuid'); 
 
 const jsonPath = path.join(__dirname, '../json/library.json');
 const libraryJSON = require(jsonPath);
@@ -36,6 +37,26 @@ router.get('/books', (req, res, next) => {
     });
 });
 
+router.post('/books', (req, res, next) => {
+    const { author, title, genre, releaseDate, pages } = req.body;
+
+    const newBook = {
+        id: uuidv4(),
+        author,
+        title,
+        genre,
+        isAvailable: true
+    };
+
+    if (genre) newBook.genre = genre;
+    if (releaseDate) newBook.releaseDate = releaseDate;
+    if (pages) newBook.pages = parseInt(pages);
+
+    libraryJSON.library.books.push(newBook);
+    saveLibrary();
+    res.redirect('/books');
+});
+
 router.get('/books/:id', (req, res, next) => {
     const id = req.params.id;
     libraryJSON.library.books.forEach(book => {
@@ -50,18 +71,21 @@ router.get('/books/:id', (req, res, next) => {
 
 router.post('/books/:id', (req, res, next) => {
     const bookId = req.params.id;
-    const { readerName, returnDate } = req.body;
+    const { readerName } = req.body;
     libraryJSON.library.books.forEach(book => {
         if (book.id === bookId) {
+            const returnDate = new Date();
+            returnDate.setDate(returnDate.getDate() + 7);
+
             book.isAvailable = false;
             book.borrowedBy = readerName;
-            book.borrowDate = "2025-01-01";
-            book.returnDate = returnDate;
+            book.borrowDate = new Date().toISOString().split('T')[0];
+            book.returnDate = returnDate.toISOString().split('T')[0];
             return;
         }
     });
     saveLibrary();
-    res.redirect('/books');
+    res.redirect(`/books/${bookId}`);
 });
 
 router.delete('/books/:id', (req, res, next) => {
