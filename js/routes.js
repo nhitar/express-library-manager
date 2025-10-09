@@ -72,18 +72,30 @@ router.get('/books/:id', (req, res, next) => {
 router.post('/books/:id', (req, res, next) => {
     const bookId = req.params.id;
     const { readerName } = req.body;
-    libraryJSON.library.books.forEach(book => {
-        if (book.id === bookId) {
-            const returnDate = new Date();
-            returnDate.setDate(returnDate.getDate() + 7);
-
-            book.isAvailable = false;
-            book.borrowedBy = readerName;
-            book.borrowDate = new Date().toISOString().split('T')[0];
-            book.returnDate = returnDate.toISOString().split('T')[0];
-            return;
-        }
-    });
+    if (readerName) {
+        libraryJSON.library.books.forEach(book => {
+            if (book.id === bookId) {
+                const returnDate = new Date();
+                returnDate.setDate(returnDate.getDate() + 7);
+    
+                book.isAvailable = false;
+                book.borrowedBy = readerName;
+                book.borrowDate = new Date().toISOString().split('T')[0];
+                book.returnDate = returnDate.toISOString().split('T')[0];
+                return;
+            }
+        });
+    } else {
+        libraryJSON.library.books.forEach(book => {
+            if (book.id === bookId) {
+                book.isAvailable = true;
+                book.borrowedBy = null;
+                book.borrowDate = null;
+                book.returnDate = null;
+                return;
+            }
+        });
+    }
     saveLibrary();
     res.redirect(`/books/${bookId}`);
 });
