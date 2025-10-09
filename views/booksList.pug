@@ -28,5 +28,28 @@ html
                     h1.borrowed ✗ Выдана: #{book.borrowedBy}
                     h1 📅 Нужно вернуть: #{book.returnDate}
 
-                form(action=`/books/${book.id}?_method=DELETE` method="POST")
-                    button(type="submit" onclick="return confirm('Удалить?')") Удалить
+                .book-actions
+                    form(action=`/books/${book.id}?_method=DELETE` method="POST")
+                        button(type="submit" onclick="return confirm('Удалить?')") Удалить
+                    
+                    form(action=`/books/${book.id}` method="GET")
+                        button(type="submit") Перейти на страничку
+
+                    if book.isAvailable
+                        button(onclick=`openBorrowDialog('${book.id}')`) Выдать книгу
+
+        dialog#bookDialog
+            form#borrowForm(method="POST")
+                label Имя читателя | Дата возврата
+                br
+                input(type="text" name="readerName" placeholder="Имя читателя" required) 
+                input(type="date" name="returnDate" required)
+                br
+                button(type="submit") Выдать
+                button(type="button" onclick="bookDialog.close()") Отмена
+
+        script.
+            function openBorrowDialog(bookId) {
+                document.getElementById('borrowForm').action = `/books/${bookId}`;
+                bookDialog.showModal();
+            }

@@ -13,6 +13,10 @@ function saveLibrary() {
     });
 }
 
+router.get('/', (req, res, next) => {
+    res.redirect('/books');
+})
+
 router.get('/books', (req, res, next) => {
     const { status, returnDate } = req.query;
     let books = libraryJSON.library.books;
@@ -28,23 +32,40 @@ router.get('/books', (req, res, next) => {
     }
 
     res.render('booksList', { 
-        books: books,
-        pageTitle: 'Список книг'
+        books: books
     });
 });
 
 router.get('/books/:id', (req, res, next) => {
     const id = req.params.id;
-    const book = libraryJSON.library.books[id - 1]
-    
-    res.render('bookPage', {
-        book: book
+    libraryJSON.library.books.forEach(book => {
+        if (book.id === id) {
+            res.render('bookPage', {
+                book: book
+            });
+            return;
+        }
     });
+});
 
+router.post('/books/:id', (req, res, next) => {
+    const bookId = req.params.id;
+    const { readerName, returnDate } = req.body;
+    libraryJSON.library.books.forEach(book => {
+        if (book.id === bookId) {
+            book.isAvailable = false;
+            book.borrowedBy = readerName;
+            book.borrowDate = "2025-01-01";
+            book.returnDate = returnDate;
+            return;
+        }
+    });
+    saveLibrary();
+    res.redirect('/books');
 });
 
 router.delete('/books/:id', (req, res, next) => {
-    const bookId = parseInt(req.params.id);
+    const bookId = req.params.id;
 
     libraryJSON.library.books = libraryJSON.library.books.filter(book => book.id !== bookId);
     libraryJSON.library.totalBooks = libraryJSON.library.books.length;

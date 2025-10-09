@@ -2,23 +2,12 @@ html
     head
         meta(charset="utf-8")
         title Карточка книги
-        style.
-            body { 
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 20px;
-                background-color: #f5f5f5;
-            }
-            h1 { 
-                color: #333;
-                margin: 10px 0;
-                font-size: 18px;
-            }
+        link(rel="stylesheet" href="/css/styles.css")
     body
         h1 Книга
-        h1 Автор: #{author}
-        h1 Название: #{title}
-        h1 Дата выпуска: #{releaseDate}
-        h1 Жанр: #{genre}
-        h1 Страниц: #{pages}
-        h1 Есть в наличии: #{isAvailable}
+        h1 Автор: #{book.author}
+        h1 Название: #{book.title}
+        h1 Дата выпуска: #{book.releaseDate}
+        h1 Жанр: #{book.genre}
+        h1 Страниц: #{book.pages}
+        h1 Есть в наличии: #{book.isAvailable}

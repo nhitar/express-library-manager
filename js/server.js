@@ -7,6 +7,7 @@ const methodOverride = require('method-override');
 server.set('view engine', 'pug');
 server.set('views', path.join(__dirname, '../views'));
 
+server.use(express.urlencoded({ extended: true }));
 server.use(methodOverride('_method'));
 server.use('/css', express.static(path.join(__dirname, '../css')));
 
