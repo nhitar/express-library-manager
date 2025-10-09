@@ -1,0 +1,11 @@
+{
+  "name": "library",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^5.1.0",
+    "method-override": "^3.0.0",
+    "pug": "^3.0.3"
+  }
+}

@@ -1,0 +1,32 @@
+html
+    head
+        meta(charset="utf-8")
+        title Карточка книги
+        link(rel="stylesheet" href="/css/styles.css")
+    body 
+        form(action="/books" method="GET")
+            select(name="status")
+                option(value="") Все книги
+                option(value="available") В наличии
+                option(value="borrowed") Выданы
+            input(type="date" name="returnDate")
+            button(type="submit") Применить
+            a(href="/books") Сбросить
+
+        h1(style="color: #333; font-size: 24px; border-bottom: 2px solid #007bff; padding-bottom: 10px;") Список книг
+
+        each book in books 
+            .book-card
+                h1(style="color: #007bff; font-size: 20px; margin-bottom: 15px;") #{book.title}
+                h1 Автор: #{book.author}
+                h1 Жанр: #{book.genre}
+                h1 Год выпуска: #{book.releaseDate}
+
+                if book.isAvailable 
+                    h1.available ✓ В наличии
+                else 
+                    h1.borrowed ✗ Выдана: #{book.borrowedBy}
+                    h1 📅 Нужно вернуть: #{book.returnDate}
+
+                form(action=`/books/${book.id}?_method=DELETE` method="POST")
+                    button(type="submit" onclick="return confirm('Удалить?')") Удалить
