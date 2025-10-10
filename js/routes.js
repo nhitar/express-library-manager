@@ -14,11 +14,11 @@ function saveLibrary() {
     });
 }
 
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
     res.redirect('/books');
 })
 
-router.get('/books', (req, res, next) => {
+router.get('/books', (req, res) => {
     const { status, returnDate } = req.query;
     let books = libraryJSON.library.books;
 
@@ -37,7 +37,7 @@ router.get('/books', (req, res, next) => {
     });
 });
 
-router.post('/books', (req, res, next) => {
+router.post('/books', (req, res) => {
     const { author, title, genre, releaseDate, pages } = req.body;
 
     const newBook = {
@@ -57,7 +57,7 @@ router.post('/books', (req, res, next) => {
     res.redirect('/books');
 });
 
-router.get('/books/:id', (req, res, next) => {
+router.get('/books/:id', (req, res) => {
     const id = req.params.id;
     libraryJSON.library.books.forEach(book => {
         if (book.id === id) {
@@ -69,7 +69,7 @@ router.get('/books/:id', (req, res, next) => {
     });
 });
 
-router.post('/books/:id', (req, res, next) => {
+router.post('/books/:id', (req, res) => {
     const bookId = req.params.id;
     const { readerName } = req.body;
     if (readerName) {
@@ -100,7 +100,7 @@ router.post('/books/:id', (req, res, next) => {
     res.redirect(`/books/${bookId}`);
 });
 
-router.delete('/books/:id', (req, res, next) => {
+router.delete('/books/:id', (req, res) => {
     const bookId = req.params.id;
 
     libraryJSON.library.books = libraryJSON.library.books.filter(book => book.id !== bookId);
