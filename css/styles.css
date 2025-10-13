@@ -60,6 +60,19 @@ button:hover {
     font-weight: bold;
 }
 
+.title {
+    color: #007bff;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.book-list {
+    color: #333;
+    font-size: 24px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
 .book-actions {
     display: flex;
     flex-direction: row;

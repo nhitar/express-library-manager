@@ -32,14 +32,14 @@ html
                 button(type="submit") Добавить
                 button(type="button" onclick="bookDialog.close()") Отмена
 
-        h1(style="color: #333; font-size: 24px; border-bottom: 2px solid #007bff; padding-bottom: 10px;") Список книг
+        h1.book-list Список книг
         #books-container
             each book in books 
                 .book-card(
                     data-id=book.id
                     style="display: block;"
                 )
-                    i(class="fa fa-book fa-lg" style="color: #007bff; font-size: 20px; margin-bottom: 15px;")  #{book.title}
+                    i.title(class="fa fa-book fa-lg")  #{book.title}
                     h1 Автор: #{book.author}
                     h1 Жанр: #{book.genre}
                     h1 Год выпуска: #{book.releaseDate}
