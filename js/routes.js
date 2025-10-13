@@ -32,9 +32,13 @@ router.get('/books', (req, res) => {
         books = books.filter(function(book) { return book.returnDate <= returnDate });
     }
 
-    res.render('booksList', { 
-        books: books
-    });
+    if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+        res.json(books);
+    } else {
+        res.render('booksList', { 
+            books: books
+        });
+    }
 });
 
 router.post('/books', (req, res) => {

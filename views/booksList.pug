@@ -5,15 +5,13 @@ html
         link(rel="stylesheet" href="/css/styles.css")
         link(rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css")
     body
-        form(action="/books" method="GET")
+        .filters
             i(class="fa fa-sort fa-lg")
             select(name="status")
                 option(value="") Все книги
                 option(value="available") В наличии
                 option(value="borrowed") Выданы
             input(type="date" name="returnDate")
-            button(type="submit") Применить
-            a(href="/books") Сбросить
 
         .book-actions
             button(onclick=`bookDialog.showModal()`) Добавить книгу
@@ -22,7 +20,6 @@ html
             form#addBookForm(action="/books" method="POST")
                 input(type="text" name="author" placeholder="Автор" required) 
                 input(type="text" name="title" placeholder="Название" required)
-                br
                 select(name="genre" required)
                     option(value="") Выберите жанр
                     option(value="Роман") Роман
@@ -31,32 +28,76 @@ html
                     option(value="Поэзия") Поэзия
                     option(value="Драма") Драма
                 input(type="date" name="releaseDate" placeholder="Год выпуска")
-                br
                 input(type="number" name="pages" placeholder="Число страниц")
-                br
                 button(type="submit") Добавить
                 button(type="button" onclick="bookDialog.close()") Отмена
 
         h1(style="color: #333; font-size: 24px; border-bottom: 2px solid #007bff; padding-bottom: 10px;") Список книг
+        #books-container
+            each book in books 
+                .book-card(
+                    data-id=book.id
+                    style="display: block;"
+                )
+                    i(class="fa fa-book fa-lg" style="color: #007bff; font-size: 20px; margin-bottom: 15px;")  #{book.title}
+                    h1 Автор: #{book.author}
+                    h1 Жанр: #{book.genre}
+                    h1 Год выпуска: #{book.releaseDate}
 
-        each book in books 
-            .book-card
-                i(class="fa fa-book fa-lg" style="color: #007bff; font-size: 20px; margin-bottom: 15px;")  #{book.title}
-                h1 Автор: #{book.author}
-                h1 Жанр: #{book.genre}
-                h1 Год выпуска: #{book.releaseDate}
+                    if book.isAvailable 
+                        i.available(class="fa fa-plus fa-lg")  В наличии
+                    else 
+                        i.borrowed(class="fa fa-times fa-lg")  Выдана: #{book.borrowedBy}
+                        br
+                        br
+                        i(class="fa fa-calendar fa-lg")  Нужно вернуть: #{book.returnDate}
 
-                if book.isAvailable 
-                    i.available(class="fa fa-plus fa-lg")  В наличии
-                else 
-                    i.borrowed(class="fa fa-times fa-lg")  Выдана: #{book.borrowedBy}
-                    br
-                    br
-                    i(class="fa fa-calendar fa-lg")  Нужно вернуть: #{book.returnDate}
+                    .book-actions
+                        form(action=`/books/${book.id}?_method=DELETE` method="POST")
+                            button(color="red" type="submit" onclick="return confirm('Удалить?')") Удалить
+                        
+                        form(action=`/books/${book.id}` method="GET")
+                            button(type="submit") Перейти на страничку
 
-                .book-actions
-                    form(action=`/books/${book.id}?_method=DELETE` method="POST")
-                        button(color="red" type="submit" onclick="return confirm('Удалить?')") Удалить
+        script.
+            document.addEventListener('DOMContentLoaded', function() {
+                const statusFilter = document.querySelector('select[name="status"]');
+                const returnDateFilter = document.querySelector('input[name="returnDate"]');
+                function updateBooks() {
+                    const params = new URLSearchParams();
+
+                    if (statusFilter.value) {
+                        params.append('status', statusFilter.value);
+                    }
                     
-                    form(action=`/books/${book.id}` method="GET")
-                        button(type="submit") Перейти на страничку
+                    if (returnDateFilter.value) {
+                        params.append('returnDate', returnDateFilter.value);
+                    }
+
+                    fetch(`/books?${params.toString()}`, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+
+                    .then(response => response.json())
+                    .then(books => {
+                        const allBookElements = document.querySelectorAll('.book-card');
+                        const filteredBookIds = books.map(book => book.id);
+                        
+                        allBookElements.forEach(bookElement => {
+                            const bookId = bookElement.dataset.id;
+                            
+                            if (filteredBookIds.includes(bookId)) {
+                                bookElement.style.display = 'block';
+                            } else {
+                                bookElement.style.display = 'none';
+                            }
+                        });
+                    })
+                }
+                
+                statusFilter.addEventListener('change', updateBooks);
+                returnDateFilter.addEventListener('change', updateBooks);
+            });

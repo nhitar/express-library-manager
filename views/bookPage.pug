@@ -30,7 +30,7 @@ html
                 button(type="submit") Перейти к списку
 
         dialog#bookDialog
-            form#borrowForm(action=`/books/${book.id}` method="POST")
+            form#borrowBookForm(action=`/books/${book.id}` method="POST")
                 br
                 input(type="text" name="readerName" placeholder="Имя читателя" required)
                 br
