@@ -53,11 +53,13 @@ button:hover {
 .available {
     color: #28a745;
     font-weight: bold;
+    margin: 10px 0;
 }
 
 .borrowed {
     color: #dc3545;
     font-weight: bold;
+    margin: 10px 0;
 }
 
 .title {
