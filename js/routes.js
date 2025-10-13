@@ -10,7 +10,6 @@ const libraryJSON = require(jsonPath);
 function saveLibrary() {
     fs.writeFile(jsonPath, JSON.stringify(libraryJSON, null, 2), (err) => {
         if (err) throw err;
-        console.log('JSON сохранён!');
     });
 }
 
@@ -29,7 +28,7 @@ router.get('/books', (req, res) => {
     }
 
     if (returnDate) {
-        books = books.filter(function(book) { return book.returnDate <= returnDate });
+        books = books.filter(function(book) { return book.returnDate >= returnDate });
     }
 
     if (req.xhr || req.headers.accept.indexOf('json') > -1) {

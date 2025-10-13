@@ -1,7 +1,8 @@
 html
     head
         meta(charset="utf-8")
-        title Карточка книги
+        title Список книг
+        link(rel="icon" type="image/png" sizes="512x512" href="/favicon/favicon.png")
         link(rel="stylesheet" href="/css/styles.css")
         link(rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css")
     body
@@ -42,7 +43,7 @@ html
                     i.title(class="fa fa-book fa-lg")  #{book.title}
                     h1 Автор: #{book.author}
                     h1 Жанр: #{book.genre}
-                    h1 Год выпуска: #{book.releaseDate}
+                    h1 Дата выпуска: #{book.releaseDate}
 
                     if book.isAvailable 
                         i.available(class="fa fa-plus fa-lg")  В наличии
@@ -81,10 +82,10 @@ html
 
                     .then(response => response.json())
                     .then(books => {
-                        const allBookElements = document.querySelectorAll('.book-card');
+                        const booksElements = document.querySelectorAll('.book-card');
                         const filteredBookIds = books.map(book => book.id);
                         
-                        allBookElements.forEach(bookElement => {
+                        booksElements.forEach(bookElement => {
                             const bookId = bookElement.dataset.id;
                             
                             if (filteredBookIds.includes(bookId)) {

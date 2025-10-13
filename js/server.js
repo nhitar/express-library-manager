@@ -9,8 +9,9 @@ server.set('views', path.join(__dirname, '../views'));
 
 server.use(express.urlencoded({ extended: true }));
 server.use(methodOverride('_method'));
-server.use('/css', express.static(path.join(__dirname, '../css')));
 
+server.use('/css', express.static(path.join(__dirname, '../css')));
+server.use('/favicon', express.static(path.join(__dirname, '../favicon')));
 server.use('/font-awesome-4.7.0', express.static(path.join(__dirname, '../font-awesome-4.7.0')));
 
 server.use('/', routes);
