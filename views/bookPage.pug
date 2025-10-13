@@ -5,34 +5,34 @@ html
         link(rel="stylesheet" href="/css/styles.css")
         link(rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css")
     body
-        h1 Книга
-        h1 Автор: #{book.author}
-        h1 Название: #{book.title}
-        h1 Дата выпуска: #{book.releaseDate}
-        h1 Жанр: #{book.genre}
-        h1 Страниц: #{book.pages}
+        .book-card
+            i(class="fa fa-book fa-lg" style="color: #007bff; font-size: 20px; margin-bottom: 15px;")  #{book.title}
+            h1 Автор: #{book.author}
+            h1 Дата выпуска: #{book.releaseDate}
+            h1 Жанр: #{book.genre}
+            h1 Страниц: #{book.pages}
 
-        if book.isAvailable
-            i.available(class="fa fa-plus fa-lg")  В наличии
-        else
-            i.borrowed(class="fa fa-times fa-lg")  Выдана: #{book.borrowedBy}        
-            h1 Дата получения: #{book.borrowDate}
-            h1 Дата возврата: #{book.returnDate} 
-
-        .book-actions
             if book.isAvailable
-                button(onclick=`bookDialog.showModal()`) Выдать книгу
-            else 
-                form(action=`/books/${book.id}` method="POST")
-                    button(type="submit") Вернуть
-                    
-            form(action=`/books` method="GET")
-                button(type="submit") Перейти к списку
+                i.available(class="fa fa-plus fa-lg")  В наличии
+            else
+                i.borrowed(class="fa fa-times fa-lg")  Выдана: #{book.borrowedBy}        
+                h1 Дата получения: #{book.borrowDate}
+                h1 Дата возврата: #{book.returnDate} 
 
-        dialog#bookDialog
-            form#borrowBookForm(action=`/books/${book.id}` method="POST")
-                br
-                input(type="text" name="readerName" placeholder="Имя читателя" required)
-                br
-                button(type="submit") Выдать
-                button(type="button" onclick="bookDialog.close()") Отмена
+            .book-actions
+                if book.isAvailable
+                    button(onclick=`bookDialog.showModal()`) Выдать книгу
+                else 
+                    form(action=`/books/${book.id}` method="POST")
+                        button(type="submit") Вернуть
+                        
+                form(action=`/books` method="GET")
+                    button(type="submit") Перейти к списку
+
+            dialog#bookDialog
+                form#borrowBookForm(action=`/books/${book.id}` method="POST")
+                    br
+                    input(type="text" name="readerName" placeholder="Имя читателя" required)
+                    br
+                    button(type="submit") Выдать
+                    button(type="button" onclick="bookDialog.close()") Отмена

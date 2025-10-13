@@ -48,9 +48,7 @@ html
                         i.available(class="fa fa-plus fa-lg")  В наличии
                     else 
                         i.borrowed(class="fa fa-times fa-lg")  Выдана: #{book.borrowedBy}
-                        br
-                        br
-                        i(class="fa fa-calendar fa-lg")  Нужно вернуть: #{book.returnDate}
+                        h1 Нужно вернуть: #{book.returnDate}
 
                     .book-actions
                         form(action=`/books/${book.id}?_method=DELETE` method="POST")
