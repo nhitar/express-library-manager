@@ -3,6 +3,7 @@ html
         meta(charset="utf-8")
         title Карточка книги
         link(rel="stylesheet" href="/css/styles.css")
+        link(rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css")
     body
         h1 Книга
         h1 Автор: #{book.author}
@@ -12,9 +13,9 @@ html
         h1 Страниц: #{book.pages}
 
         if book.isAvailable
-            h1.available ✓ В наличии
+            i.available(class="fa fa-plus fa-lg")  В наличии
         else
-            h1.borrowed ✗ Выдана: #{book.borrowedBy}
+            i.borrowed(class="fa fa-times fa-lg")  Выдана: #{book.borrowedBy}        
             h1 Дата получения: #{book.borrowDate}
             h1 Дата возврата: #{book.returnDate} 
 
@@ -24,6 +25,9 @@ html
             else 
                 form(action=`/books/${book.id}` method="POST")
                     button(type="submit") Вернуть
+                    
+            form(action=`/books` method="GET")
+                button(type="submit") Перейти к списку
 
         dialog#bookDialog
             form#borrowForm(action=`/books/${book.id}` method="POST")

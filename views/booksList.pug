@@ -3,8 +3,10 @@ html
         meta(charset="utf-8")
         title Карточка книги
         link(rel="stylesheet" href="/css/styles.css")
-    body 
+        link(rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css")
+    body
         form(action="/books" method="GET")
+            i(class="fa fa-sort fa-lg")
             select(name="status")
                 option(value="") Все книги
                 option(value="available") В наличии
@@ -39,16 +41,18 @@ html
 
         each book in books 
             .book-card
-                h1(style="color: #007bff; font-size: 20px; margin-bottom: 15px;") #{book.title}
+                i(class="fa fa-book fa-lg" style="color: #007bff; font-size: 20px; margin-bottom: 15px;")  #{book.title}
                 h1 Автор: #{book.author}
                 h1 Жанр: #{book.genre}
                 h1 Год выпуска: #{book.releaseDate}
 
                 if book.isAvailable 
-                    h1.available ✓ В наличии
+                    i.available(class="fa fa-plus fa-lg")  В наличии
                 else 
-                    h1.borrowed ✗ Выдана: #{book.borrowedBy}
-                    h1 📅 Нужно вернуть: #{book.returnDate}
+                    i.borrowed(class="fa fa-times fa-lg")  Выдана: #{book.borrowedBy}
+                    br
+                    br
+                    i(class="fa fa-calendar fa-lg")  Нужно вернуть: #{book.returnDate}
 
                 .book-actions
                     form(action=`/books/${book.id}?_method=DELETE` method="POST")
