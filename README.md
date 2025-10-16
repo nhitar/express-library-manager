@@ -19,7 +19,7 @@ cd express-library-manager
 npm install
 ```
 
-Запуск сервера из корня проекта:
+Запуск сервера:
 
 ```bash
 npm start
