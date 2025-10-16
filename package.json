@@ -1,8 +1,9 @@
 {
-  "name": "library",
+  "name": "express-library-manager",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "scripts": {
+    "start": "node src/server/server.js"
+  },
   "dependencies": {
     "express": "^5.1.0",
     "method-override": "^3.0.0",
