@@ -64,7 +64,7 @@ router.get('/books/:id', (req, res) => {
     const id = req.params.id;
     libraryJSON.library.books.forEach(book => {
         if (book.id === id) {
-            res.render('bookPage', {
+            res.render('bookCard', {
                 book: book
             });
             return;
